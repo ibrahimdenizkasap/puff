@@ -1,0 +1,5 @@
+<resources>
+    <!-- Keep it simple; no old color attrs -->
+    <style name="Theme.PuffCounter" parent="Theme.Material3.DayNight.NoActionBar" />
+</resources>
+

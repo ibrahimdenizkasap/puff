@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <!-- ... existing strings ... -->
+    <string name="overlay_notification_title">Puff bubble active</string>
+    <string name="overlay_action_add">+1</string>
+    <string name="overlay_action_undo">Undo</string>
+    <string name="overlay_action_save">Save</string>
+    <string name="overlay_session_initial_text">Session: 0</string>
+    <string name="overlay_session_text">Session: %1$d</string>
+</resources>

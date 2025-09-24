@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.puffs">
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application
+        android:allowBackup="true"
+        android:label="Puff Counter"
+        android:theme="@style/Theme.PuffCounter"
+        науки-art=""
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round">
+
+        <activity
+            android:exported="false"
+            android:theme="@style/Theme.PuffCounter"
+            android:name=".OverlayPermissionActivity" />
+
+        <activity
+            android:exported="true"
+            android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:exported="false"
+            android:foregroundServiceType="dataSync"
+            android:name=".overlay.OverlayService" />
+
+        <receiver
+            android:exported="false"
+            android:name=".notif.ActionReceiver">
+            <intent-filter>
+                <action android:name="com.example.puffs.ACTION" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:label="Puffs"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="true"
+            android:name=".tile.PuffTileService">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+    </application>
+</manifest>
