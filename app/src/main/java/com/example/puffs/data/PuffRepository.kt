@@ -33,12 +33,14 @@ class PuffRepository(ctx: Context) {
     fun todaySavedCountOld() = daily.todaySavedCountFlow()
 
     suspend fun addPuff(now: Long = System.currentTimeMillis()) {
+        finalizeIfTimedOut(now)
+
         puffs.insert(Puff(timestamp = now))
-        val d = auto.getDraftOnce()
-        if (d == null || now - d.lastPuffTs > SESSION_TIMEOUT_MS) {
+        val draft = auto.getDraftOnce()
+        if (draft == null) {
             auto.upsertDraft(DraftSession(1, startTs = now, lastPuffTs = now, puffCount = 1))
         } else {
-            auto.upsertDraft(d.copy(lastPuffTs = now, puffCount = d.puffCount + 1))
+            auto.upsertDraft(draft.copy(lastPuffTs = now, puffCount = draft.puffCount + 1))
         }
     }
 
@@ -66,7 +68,7 @@ class PuffRepository(ctx: Context) {
 
     suspend fun finalizeIfTimedOut(now: Long = System.currentTimeMillis()) {
         val d = auto.getDraftOnce() ?: return
-        if (now - d.lastPuffTs > SESSION_TIMEOUT_MS && d.puffCount > 0) {
+        if (now - d.lastPuffTs >= SESSION_TIMEOUT_MS && d.puffCount > 0) {
             auto.insertSession(Session2(startTs = d.startTs, endTs = d.lastPuffTs, puffCount = d.puffCount))
             auto.clearDraft()
         }
